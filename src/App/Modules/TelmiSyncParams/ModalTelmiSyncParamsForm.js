@@ -5,6 +5,7 @@ import ModalLayoutPadded from '../../Components/Modal/ModalLayoutPadded.js'
 import ButtonsContainer from '../../Components/Buttons/ButtonsContainer.js'
 import ButtonIconTextCheck from '../../Components/Buttons/IconsTexts/ButtonIconTextCheck.js'
 import InputSelect from '../../Components/Form/Input/InputSelect.js'
+import InputText from "../../Components/Form/Input/InputText.js";
 import ModalTitle from '../../Components/Modal/ModalTitle.js'
 import ModalContent from '../../Components/Modal/ModalContent.js'
 import Form from '../../Components/Form/Form.js'
@@ -15,7 +16,9 @@ function ModalTelmiSyncParamsForm({onClose}) {
     {params, saveParams} = useTelmiSyncParams(),
     [audioDevices, setAudioDevices] = useState([]),
     inputRef0 = useRef(),
-    inputRef1 = useRef()
+    inputRef1 = useRef(),
+    inputRef2 = useRef(),
+    inputRef3 = useRef()
 
   useEffect(
     () => {
@@ -31,7 +34,6 @@ function ModalTelmiSyncParamsForm({onClose}) {
     },
     []
   )
-
   return <ModalLayoutPadded isClosable={true}
                             onClose={onClose}>
     <ModalTitle>{getLocale('telmi-sync-params')} :</ModalTitle>
@@ -53,8 +55,19 @@ function ModalTelmiSyncParamsForm({onClose}) {
                            {value: 'fr_FR-upmc/0', text: 'Femme'},
                            {value: 'fr_FR-upmc/1', text: 'Homme'},
                            {value: 'fr_FR-dantsu/0', text: 'DantSu'},
+                           {value: 'elevenlabs/elevenlabs', text: 'ElevenLabs'},
                          ]}
                          ref={inputRef1}/>
+            <InputText label={getLocale('elevenlabs-api-key')}
+                         key="elevenlabs-api-key"
+                         id="elevenlabs-api-key"
+                         defaultValue={params.elevenlabs ? params.elevenlabs.apiKey : ""}
+                         ref={inputRef2}/>
+            <InputText label={getLocale('elevenlabs-voice')}
+                         key="elevenlabs-voice"
+                         id="elevenlabs-voice"
+                         defaultValue={params.elevenlabs ? params.elevenlabs.voice : ""}
+                         ref={inputRef3}/>
           </ModalContent>
           <ButtonsContainer>
             <ButtonIconTextCheck text={getLocale('save')}
@@ -64,12 +77,15 @@ function ModalTelmiSyncParamsForm({onClose}) {
                                      [
                                        inputRef0,
                                        inputRef1,
+                                       inputRef2,
+                                       inputRef3,
                                      ],
                                      (values) => {
                                        const piper = values[1].split('/')
                                        saveParams({
                                          microphone: values[0],
-                                         piper: {voice: piper[0], speaker: piper[1]}
+                                         piper: {voice: piper[0], speaker: piper[1]},
+                                         elevenlabs: {apiKey: values[2], voice: values[3]}
                                        })
                                        onClose()
                                      }
