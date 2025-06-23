@@ -39,6 +39,8 @@ jobs:
         run: rm -r extraResources/*/win32
         if: ${{ ! startsWith(matrix.os, 'windows') }}
 
+      - run: npm ci
+
       - name: Build/release Electron app
         uses: paneron/action-electron-builder@v1.8.1
         with:
