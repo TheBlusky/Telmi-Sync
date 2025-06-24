@@ -39,8 +39,8 @@ jobs:
         run: rm -r extraResources/*/win32
         if: ${{ ! startsWith(matrix.os, 'windows') }}
 
-      - run: npm install
-      - run: npm run build
+      - run: yarn install
+      - run: yarn build
 
       # - name: Build/release Electron app
       #   uses: paneron/action-electron-builder@v1.8.1
